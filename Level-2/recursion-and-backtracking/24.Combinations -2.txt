@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void combination(vector<bool> &boxes,int ci,int ti,int llb){
+    //base case
+    if(ci>ti){
+        for(int i=0;i<boxes.size();i++){
+            if(boxes[i]==true){
+                cout<<"i";
+            }
+            else
+            cout<<"-";
+        }
+        cout<<endl;
+        return;
+    }
+    
+    for(int i=llb;i<boxes.size();i++){
+        if(boxes[i]==false)//usme koi bhi item abhi tak nhi rakha hai
+        {
+            boxes[i]=true;
+            combination(boxes,ci+1,ti,i+1);
+            boxes[i]=false;
+        }
+    }
+}
+
+int main(){
+    int n;
+    cin>>n;
+    int r;
+    cin>>r;
+    vector<bool> boxes(n,false);
+    combination(boxes,1,r,0);
+    return 0;
+}

@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+long  minCost(vector<vector<int>> &paints){
+    int n=paints.size();
+    long  dp[n][3];
+    
+    dp[0][0]=paints[0][0];//red
+    dp[0][1]=paints[0][1];//blue
+    dp[0][2]=paints[0][2];//green
+    
+    for(int i=1;i<paints.size();i++){
+        dp[i][0]=paints[i][0]+min(dp[i-1][1],dp[i-1][2]);//red
+        dp[i][1]=paints[i][1]+min(dp[i-1][0],dp[i-1][2]);//blue
+        dp[i][2]=paints[i][2]+min(dp[i-1][0],dp[i-1][1]);//green
+    }
+    return min(dp[n-1][0],min(dp[n-1][1],dp[n-1][2]));
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<vector<int>> paints(n,vector<int>(3));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<3;j++){
+            cin>>paints[i][j];
+        }
+    }
+    cout<<minCost(paints);
+    return 0;
+}

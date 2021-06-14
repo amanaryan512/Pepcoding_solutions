@@ -1,0 +1,36 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+void placeNQueen(vector<vector<bool>> chess,string asf,vector<bool> cols,vector<bool> ndiag,vector<bool> rdiag,int row){
+    
+    if(row==chess.size()){
+        cout<<asf<<"."<<endl;
+        return;
+    }
+    
+    for(int col=0;col<chess[0].size();col++){
+        if(cols[col]==false && ndiag[row+col]==false && rdiag[row-col+chess.size()-1]==false){
+            chess[row][col]=true;
+            cols[col]=true;
+            ndiag[row+col]=true;
+            rdiag[row-col+chess.size()-1]=true;
+            placeNQueen(chess,asf+to_string(row)+"-"+to_string(col)+", ",cols,ndiag,rdiag,row+1);
+            chess[row][col]=false;
+            cols[col]=false;
+            ndiag[row+col]=false;
+            rdiag[row-col+chess.size()-1]=false;
+        }
+    }
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<vector<bool>> chess(n,vector<bool>(n,false));
+    vector<bool> cols(n,false);
+    vector<bool> nDiag(2*n-1,false);
+    vector<bool> rDiag(2*n-1,false);
+    placeNQueen(chess,"",cols,nDiag,rDiag,0);
+    return 0;
+}

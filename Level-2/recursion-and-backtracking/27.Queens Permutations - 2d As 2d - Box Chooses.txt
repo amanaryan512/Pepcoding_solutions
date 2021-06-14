@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void queenPermutations(int qpsf,int tq,int row,int col,string asf,vector<bool> &queens){
+    
+    if(row==tq){
+        if(qpsf==tq){
+            cout<<asf<<endl;
+            cout<<endl;
+        }
+        return;
+    }
+    int nr=0,nc=0;
+    char separator='\0';
+    if(col==tq-1){
+        nr=row+1;
+        nc=0;
+        separator='\n';
+    }
+    else{
+        nr=row;
+        nc=col+1;
+        separator='\t';
+    }
+    
+    for(int i=0;i<queens.size();i++){
+        if(queens[i]==false){
+            queens[i]=true;
+            queenPermutations(qpsf+1,tq,nr,nc,asf+"q"+to_string(i+1)+separator,queens);
+            queens[i]=false;
+        }
+    }
+    
+    //agar box apne me queen baithne nhi diya
+    queenPermutations(qpsf,tq,nr,nc,asf+"-"+separator,queens);
+}
+
+int main(){
+    int n;
+    cin>>n;
+    
+    vector<bool> queens(n,false);
+    
+    queenPermutations(0,n,0,0,"",queens);
+    
+    return 0;
+}

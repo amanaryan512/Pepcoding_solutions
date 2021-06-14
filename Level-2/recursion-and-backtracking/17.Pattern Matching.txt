@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void solve(string s,string ptr,map<char,string> mymap,string op){
+    
+    //base case
+    if(ptr.size()==0){
+        if(s.size()==0){
+            //for printing unique elements
+            set<char> st;
+            for(int i=0;i<op.size();i++){
+                char ch=op[i];
+                if(st.find(ch)==st.end())//it is not ye printed
+                {
+                    cout<<ch<<" -> "<<mymap[ch]<<", ";
+                    st.insert(ch);//insert in the set
+                }
+            }
+            cout<<"."<<endl;
+        }
+        return;
+    }
+    
+    char ch=ptr[0];
+    string rop=ptr.substr(1);
+    
+    //charcter already there in the map
+    if(mymap.find(ch)!=mymap.end()){
+        string mappedString=mymap[ch];
+        //size of string left should be grater than or qual to mapped string
+        if(s.length()>=mappedString.length()){
+            string lhalf=s.substr(0,mappedString.length());
+            string rhalf=s.substr(mappedString.length());
+            if(mappedString.compare(lhalf)==0){ // if both are equal
+                solve(rhalf,rop,mymap,op);
+            }
+        }
+        
+    }
+    //charcter occuring for the 1st time
+    else{
+        for(int i=0;i<s.length();i++){
+            string prefix=s.substr(0,i+1);
+            string ros=s.substr(i+1);
+            mymap[ch]=prefix;
+            solve(ros,rop,mymap,op);
+            mymap.erase(mymap.find(ch));//backTrack
+        }
+    }
+    
+}
+
+int main(){
+    string s;
+    cin>>s;
+    string ptr;
+    cin>>ptr;
+    map<char,string> mymap;
+    solve(s,ptr,mymap,ptr);
+    return 0;
+}

@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void coinPermutations(vector<int> &coins,int apsf,int tamt,string asf,vector<bool> &used){
+    if(apsf>tamt)
+    return;
+    else if(apsf==tamt){
+        cout<<asf<<"."<<endl;
+        return;
+    }
+    
+    for(int i=0;i<coins.size();i++){
+        if(used[i]==false){
+            used[i]=true;
+            coinPermutations(coins,apsf+coins[i],tamt,asf+to_string(coins[i])+"-",used);
+            used[i]=false;
+        }
+    }
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> coins(n);
+    for(int i=0;i<n;i++){
+        cin>>coins[i];
+    }
+    int amt;
+    cin>>amt;
+    vector<bool> used(n,false);
+    coinPermutations(coins,0,amt,"",used);
+    return 0;
+}

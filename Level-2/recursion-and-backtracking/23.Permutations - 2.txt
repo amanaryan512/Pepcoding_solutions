@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void permutation(int cb,int tb,int ssf,int ts,vector<int> &selectedItem,string asf){
+    if(cb>tb){
+        if(ssf==ts){
+            cout<<asf<<endl;
+        }
+        return;
+    }
+    
+    //selecting boxes(box ne apne me items ko baithya)
+    for(int i=0;i<ts;i++){
+        if(selectedItem[i]==0){//item is not selected
+            selectedItem[i]=1;//select it
+            permutation(cb+1,tb,ssf+1,ts,selectedItem,asf+to_string(i+1));
+            selectedItem[i]=0;//backTrack
+        }
+    }
+    //agar box apne me item ko nhi baithaya
+    permutation(cb+1,tb,ssf,ts,selectedItem,asf+"0");
+}
+
+int main(){
+    int n;//boxes
+    cin>>n;
+    int r;//items
+    cin>>r;
+    vector<int> selectedItem(r,0);
+    permutation(1,n,0,r,selectedItem,"");
+    return 0;
+}

@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+long long countBS(int n){
+    long long dpB[n+1];
+    long long dpS[n+1];
+    dpB[1]=1;
+    dpS[1]=1;
+    
+    for(int i=2;i<n+1;i++){
+        dpB[i]=dpS[i-1];
+        dpS[i]=dpB[i-1]+dpS[i-1];
+    }
+    return (dpB[n]+dpS[n])*(dpB[n]+dpS[n]);
+}
+
+int main(){
+    int n;
+    cin>>n;
+    cout<<countBS(n);
+    return 0;
+}

@@ -1,0 +1,82 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool isQueenSafe(vector<vector<int>> &chess,int row,int col){
+    //vertical check
+   for(int i=row,j=col;i>=0;i--){
+       if(chess[i][j]>0)
+       return false;
+   }
+   for(int i=row,j=col;i<chess.size();i++){
+       if(chess[i][j]>0)
+       return false;
+   }
+    
+    //horizontal check
+    for(int i=row,j=col;j>=0;j--){
+        if(chess[i][j]>0)
+        return false;
+    }
+    for(int i=row,j=col;j<chess.size();j++){
+        if(chess[i][j]>0)
+        return false;
+    }
+    
+    //left Diagonal
+   for(int i=row,j=col;i>=0 && j>=0 ;i--,j--){
+       if(chess[i][j]>0)
+       return false;
+   }
+   for(int i=row,j=col;i<chess.size() && j<chess.size() ;i++,j++){
+       if(chess[i][j]>0)
+       return false;
+   }
+    
+    //right diagonal
+   for(int i=row,j=col;i>=0 && j<chess.size();i--,j++){
+       if(chess[i][j]>0)
+       return false;
+   }
+   for(int i=row,j=col;i<chess.size() && j>=0;i++,j--){
+       if(chess[i][j]>0)
+       return false;
+   }
+    return true;
+}
+
+void queenPermutation(vector<vector<int>> &chess,int qpsf,int tq){
+    
+    //base case
+    if(qpsf==tq){
+        for(int i=0;i<chess.size();i++){
+            for(int j=0;j<chess[0].size();j++){
+                if(chess[i][j]==0)
+                cout<<"-\t";
+                else
+                cout<<"q"+to_string(chess[i][j])<<"\t";
+            }
+            cout<<endl;
+        }
+        cout<<endl;
+        
+        return;
+    }
+    
+    for(int cell=0;cell<(chess.size()*chess.size());cell++){
+        int row=cell / chess.size();
+        int col=cell % chess.size();
+        if(chess[row][col]==0 && isQueenSafe(chess,row,col)==true){
+            chess[row][col]=qpsf+1;
+            queenPermutation(chess,qpsf+1,tq);
+            chess[row][col]=0;
+        }
+    }
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<vector<int>> chess(n,vector<int>(n,0));
+    queenPermutation(chess,0,n);
+    return 0;
+}

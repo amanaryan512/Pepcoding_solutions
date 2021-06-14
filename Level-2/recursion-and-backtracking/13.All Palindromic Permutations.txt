@@ -1,0 +1,68 @@
+  ---- 1 test case if failing , unable to find the reason----
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+void generatepw(int cs,int ts,map<char,int> fmap,string odds,string asf){
+    if(cs>ts){
+        string res=asf;
+        reverse(asf.begin(),asf.end());
+        if(odds!=""){
+            res+=odds;
+        }
+        res+=asf;
+        cout<<res<<endl;
+        return ;
+    }
+    
+    for(auto it=fmap.begin();it!=fmap.end();it++){
+        //int freq=it->second;
+        if(it->second>0){
+            fmap[it->first]--;
+            generatepw(cs+1,ts,fmap,odds,asf+it->first);
+            fmap[it->first]++;
+        }
+    }
+}
+
+int main(){
+    string s;
+    cin>>s;
+    
+    map<char,int> fmap;
+    /* "aaabb"
+    
+       'a'-3
+       'b'-2
+       */
+    for(int i=0;i<s.length();i++){
+        char c=s[i];
+        fmap[c]++;
+    }
+    
+    string odd="";
+    int noOfOddCharcters=0;
+    int len=0;//length of string after reducing string by half
+    for(auto it=fmap.begin();it!=fmap.end();it++){
+        int freq=it->second;
+        if(freq%2==1){//odd frequnecy
+            noOfOddCharcters++;
+            odd.push_back(it->first);
+        }
+       /* 'a'- 3/2=1
+          'b'- 2/2=1
+       */
+        fmap[it->first]=it->second/2;
+        len+=freq/2;
+    }
+    //violating condition
+    if(noOfOddCharcters>1){
+    cout<<"-1";
+    return 0;
+    }
+    
+    generatepw(1,len,fmap,odd,"");
+    
+    return 0;
+}

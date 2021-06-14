@@ -1,0 +1,62 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int maxScore(vector<string> words,vector<int> freqOfChar,vector<int> score,int idx )
+{
+    if(idx==words.size()){
+        return 0;
+    }
+    int scoreNo=0+maxScore(words,freqOfChar,score,idx+1);//word not included
+    
+    //word include
+    int scoreWord=0;
+    string word=words[idx];
+    bool flag=true;//true if yes call can be made
+    
+    for(int i=0;i<word.length();i++){
+        char ch=word[i];
+        if(freqOfChar[ch-'a']==0){
+            flag=false;
+        }
+        freqOfChar[ch-'a']--;
+        scoreWord=scoreWord+score[ch-'a'];
+    }
+    int scoreYes=0;
+    if(flag==true){
+        scoreYes=scoreWord+maxScore(words,freqOfChar,score,idx+1);
+    }
+    //backtrack
+    for(int i=0;i<word.length();i++){
+        char ch=word[i];
+        freqOfChar[ch-'a']++;
+    }
+     return max(scoreYes,scoreNo);   
+}
+
+int main(){
+    int noOfWords;
+    cin>>noOfWords;
+    vector<string> word(noOfWords);
+    for(int i=0;i<noOfWords;i++){
+        cin>>word[i];
+    }
+    int noOfLetters;
+    cin>>noOfLetters;
+    vector<char> letters(noOfLetters);
+    for(int i=0;i<noOfLetters;i++){
+        cin>>letters[i];
+    }
+    vector<int> score(26);
+    for(int i=0;i<26;i++)
+    {
+        cin>>score[i];
+    }
+    vector<int> freqOfChar(26);
+    for(char ch:letters){
+        freqOfChar[ch-'a']++;
+    }
+    
+    cout<<maxScore(word,freqOfChar,score,0);
+    return 0;
+}

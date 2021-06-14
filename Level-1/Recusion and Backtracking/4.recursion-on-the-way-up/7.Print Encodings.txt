@@ -1,0 +1,55 @@
+#include <iostream>
+#include<string>
+using namespace std;
+
+void printEncoding(string str, string asf){
+    if(str.size()==0){
+        cout<<asf<<endl;
+        return;
+    }else if(str.size()==1){
+        char ch=str[0];
+        if(ch=='0'){
+            return;
+        }
+        else{
+            int chValue=ch-'0';
+            char code=(char)('a'+chValue-1);
+            asf=asf+code;
+            cout<<asf<<endl;
+        }
+    }
+        //if str length is 2 or grater than 2
+        else{
+            char ch=str[0];
+            string ros=str.substr(1);
+            if(ch=='0'){
+            return;
+        }
+        else{
+            int chValue=ch-'0';
+            char code=(char)('a'+chValue-1);
+            printEncoding(ros,asf+code);
+        }
+        
+        string ch12=str.substr(0,2);
+        string ros2=str.substr(2);
+        
+        int ch12Value=stoi(ch12);
+        if(ch12Value<=26){
+            char code=(char)('a'+ch12Value-1);
+            printEncoding(ros2,asf+code);
+            
+        }
+            
+        
+        
+    }
+    
+}
+
+int main(){
+    string str;
+    cin>>str;
+    printEncoding(str,"");
+    
+}

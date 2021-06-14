@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void queenCombinations(int qpsf,int tq,int row,int col,vector<vector<bool>> &chess){
+    if(qpsf==tq){
+        for(int i=0;i<chess.size();i++){
+            for(int j=0;j<chess[0].size();j++){
+                if(chess[i][j])
+                cout<<"q\t";
+                else
+                cout<<"-\t";
+            }
+            cout<<endl;
+        }
+        cout<<endl;
+        return;
+    }
+    
+    //queen jaha place hue h , usi row me baaki k dabbe
+    for(int j=col+1;j<chess[0].size();j++){
+        if(chess[row][j]==false){
+            chess[row][j]=true;
+            queenCombinations(qpsf+1,tq,row,j,chess);        
+            chess[row][j]=false;
+        }
+    }
+    //next row se saare dabbe k liye
+    for(int i=row+1;i<chess.size();i++){
+        for(int j=0;j<chess[0].size();j++){
+            if(chess[i][j]==false){
+            chess[i][j]=true;
+            queenCombinations(qpsf+1,tq,i,j,chess);        
+            chess[i][j]=false;
+        }
+        }
+    }
+}
+
+int main(){
+    int n;
+    cin>>n;
+    
+    vector<vector<bool>> chess(n,vector<bool>(n,false));
+    queenCombinations(0,n,0,-1,chess);
+    
+    
+    return 0;
+}

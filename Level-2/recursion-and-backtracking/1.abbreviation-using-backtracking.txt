@@ -1,0 +1,34 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+void printAbb(string s,string asf,int count){
+    if(s.size()==0){
+        if(count==0){
+            cout<<asf<<endl;
+            return;
+        }
+        else{
+            cout<<asf+to_string(count)<<endl;
+            return;
+        }
+    }
+    char ch=s[0];
+    string ros=s.substr(1);
+    if(count>0){
+        printAbb(ros,asf+to_string(count)+ch,0);
+        printAbb(ros,asf,count+1);
+    }
+    else{
+        printAbb(ros,asf+ch,0);
+       printAbb(ros,asf,count+1);
+    }
+}
+
+int main(){
+    string s;
+    cin>>s;
+    printAbb(s,"",0);
+    
+    return 0;
+}

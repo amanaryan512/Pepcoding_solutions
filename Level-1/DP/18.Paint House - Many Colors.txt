@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+long long minCost(vector<vector<int>> &costs){
+    int n=costs.size();
+    int k=costs[0].size();
+    long long dp[n][k];
+    
+    //i ->  denoted == houses
+    //j denotes  -> jth color
+    //Initialize
+    for(int i=0;i<k;i++)
+    dp[0][i]=costs[0][i];
+    
+    for(int i=1;i<n;i++){
+        for(int j=0;j<k;j++){
+            long long minPreviousRow=INT_MAX;
+            for(int x=0;x<k;x++){
+                if(x!=j){
+                    minPreviousRow=min(minPreviousRow,dp[i-1][x]);
+                }
+            }
+                dp[i][j]=costs[i][j]+minPreviousRow;
+        }
+    }
+  long long  ans=INT_MAX;
+    for(int i=0;i<k;i++){
+        ans=min(ans,dp[n-1][i]);
+    }
+    return ans;
+    
+    
+}
+
+int main(){
+    int houses;
+    cin>>houses;
+    int colors;
+    cin>>colors;
+    
+    vector<vector<int>> cost(houses,vector<int>(colors));
+    
+    for(int i=0;i<houses;i++){
+        for(int j=0;j<colors;j++){
+            cin>>cost[i][j];
+        }
+    }
+    cout<<minCost(cost);
+    return 0;
+}

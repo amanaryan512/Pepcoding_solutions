@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int knapsack(vector<int> &val,vector<int> &wt,int capacity){
+    int n=val.size();
+    vector<int> dp(capacity+1,0);
+    
+    dp[0]=0;
+    
+    //for each capacity we are checking
+    for(int cap=1;cap<capacity+1;cap++){
+        //we can use all the coins
+        for(int w=0;w<wt.size();w++){
+            if(cap>=wt[w]){
+                dp[cap]=max(dp[cap],val[w]+dp[cap-wt[w]]);
+        }
+    }
+    }
+    return dp[capacity];
+    
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> val(n);
+    vector<int> wt(n);
+    for(int i=0;i<n;i++){
+        cin>>val[i];
+    }
+    for(int i=0;i<n;i++){
+        cin>>wt[i];
+    }
+    int capacity;//capacity of knapsack
+    cin>>capacity;
+    cout<<knapsack(val,wt,capacity);
+    
+    return 0;
+}

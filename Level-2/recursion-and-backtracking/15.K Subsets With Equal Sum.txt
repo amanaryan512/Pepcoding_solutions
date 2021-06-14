@@ -1,0 +1,69 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void solution(int idx,vector<int> &arr,vector<int> &subsetSum,vector<vector<int>> &ans,int ssc,int k){
+    
+    if(idx==arr.size()){
+        if(ssc==k){
+            bool flag=true;
+            for(int i=0;i<subsetSum.size()-1;i++){
+                if(subsetSum[i]!=subsetSum[i+1]){
+                    flag=false;
+                    break;
+                }
+            }
+            if(flag){
+                for(auto set:ans){
+                cout<<'[';
+                for(int i=0;i<set.size();i++){
+                    cout<<set[i];
+                    if(i < set.size() -1) cout << ", ";
+                }
+                  cout<<"] ";
+            }
+            cout<<endl;
+          
+            }
+            }
+            return;
+            
+        }
+    
+    for(int i=0;i<ans.size();i++){
+        if(ans[i].size()>0){
+            ans[i].push_back(arr[idx]);
+            subsetSum[i]+=arr[idx];
+            solution(idx+1,arr,subsetSum,ans,ssc,k);
+            ans[i].pop_back();
+            subsetSum[i]-=arr[idx];
+            
+        }
+        else{
+            ans[i].push_back(arr[idx]);
+            subsetSum[i]+=arr[idx];
+            solution(idx+1,arr,subsetSum,ans,ssc+1,k);
+            ans[i].pop_back();
+            subsetSum[i]-=arr[idx];
+            break;
+        }
+    }
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    int k;
+    cin>>k;
+    
+    vector<int> subsetSum(k,0);
+    vector<vector<int>> ans(k);
+    
+    solution(0,arr,subsetSum,ans,0,k);
+    
+    
+    return 0;
+}

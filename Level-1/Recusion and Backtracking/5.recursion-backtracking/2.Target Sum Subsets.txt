@@ -1,0 +1,30 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+void targetSum(vector<int> arr,int idx,int currSum,int target,string asf){
+    if(idx==arr.size()){
+        if(currSum==target){
+            cout<<asf<<"."<<endl;
+        }
+        return;
+    }
+    if(currSum<=target){
+    targetSum(arr,idx+1,currSum+arr[idx],target,(asf+to_string(arr[idx]))+", ");
+    }
+    targetSum(arr,idx+1,currSum,target,asf);
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    int target;
+    cin>>target;
+    
+    targetSum(arr,0,0,target,"");
+    return 0;
+}

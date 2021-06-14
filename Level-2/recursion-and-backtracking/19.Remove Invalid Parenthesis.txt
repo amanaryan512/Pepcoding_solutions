@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int getMin(string s){
+    stack<char> st;
+    for(int i=0;i<s.length();i++){
+        char ch=s[i];
+        if(ch=='('){
+            st.push(ch);
+        }
+        else if(ch==')'){
+            if(st.size()==0)
+             st.push(ch);
+            else if(st.top()=='(')
+             st.pop();
+            
+            else if(st.top()==')')
+             st.push(ch);
+        }
+    }
+    return st.size();
+}
+
+void solve(string str,set<string> &st,int mr){
+    if(mr==0){
+        int mrOfCurrentString=getMin(str);
+        if(mrOfCurrentString==0){
+         if(st.find(str)==st.end()){//not present in the set
+            cout<<str<<endl;
+            st.insert(str);
+        }
+    }
+        return;
+   }
+    
+    set<string> alreadyPut;
+    //remove 1 bracket and call on the rest of string
+    for(int i=0;i<str.length();i++){
+        string left=str.substr(0,i);
+        string right=str.substr(i+1);
+        if(alreadyPut.find(left+right)==alreadyPut.end()){
+        alreadyPut.insert(left+right);
+        solve(left+right,st,mr-1);
+        }
+    }
+    
+}
+int main(){
+    string s;
+    cin>>s;
+    int minRemoval=getMin(s);
+    set<string> st;
+    solve(s,st,minRemoval);
+    return 0;
+}

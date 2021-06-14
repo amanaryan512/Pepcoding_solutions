@@ -1,0 +1,58 @@
+#include<iostream>
+#include<vector>
+
+using namespace std;
+
+// sr - source row
+// sc - source column
+// dr - destination row
+// dc - destination column
+vector <string> getMazePaths(int sr, int sc, int dr, int dc) {
+    if(sr==dr && sc==dc)
+    {
+        vector<string> bres;
+        bres.push_back("");
+        return bres;
+    }
+    vector<string> paths;
+    
+    for(int i=1;i<=dc-sc;i++){
+        vector<string> hpath=getMazePaths(sr,sc+i,dr,dc);
+        for(string path:hpath){
+            paths.push_back("h"+to_string(i)+path);
+        }
+    }
+    for(int i=1;i<=dr-sr;i++){
+        vector<string> vpath=getMazePaths(sr+i,sc,dr,dc);
+        for(string path:vpath){
+            paths.push_back("v"+to_string(i)+path);
+        }
+    }
+    for(int i=1;i<=dc-sc&& dr-sr;i++){
+        vector<string> dpath=getMazePaths(sr+i,sc+i,dr,dc);
+        for(string path:dpath){
+            paths.push_back("d"+to_string(i)+path);
+        }
+    }
+    return paths;
+
+}
+
+void display(vector<string>& arr){
+    cout << "[";
+    for(int i = 0;i < arr.size();i++){
+        cout << arr[i];
+        if(i < arr.size() -1) cout << ", ";
+    }
+    
+    cout << "]"<<endl;
+}
+
+
+int main() {
+    int n,m; cin >> n >> m;
+    vector<string> ans = getMazePaths(0,0,n-1,m-1);
+    display(ans);
+
+    return 0;
+}

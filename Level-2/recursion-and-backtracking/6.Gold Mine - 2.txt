@@ -1,0 +1,63 @@
+   ---- Question statement is not clear, below solution is leetcode paths with max. gold----
+
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int maxVal=0;
+
+void travelAndCollectGold(vector<vector<int>> &mine,int i,int j,int goldCollected){
+    
+    if(i<0 || j<0 || i>=mine.size() || j>=mine[0].size() || mine[i][j]==0 ){
+        return;
+    }
+    
+    //visited[i][j]=true;
+   // bag.push_back(mine[i][j]);
+   int currentGold=mine[i][j];
+   int collectedtillNow=currentGold+goldCollected;
+   mine[i][j]=0;
+   maxVal=max(maxVal,collectedtillNow);
+    travelAndCollectGold(mine,i-1,j,collectedtillNow);
+    travelAndCollectGold(mine,i,j+1,collectedtillNow);
+    travelAndCollectGold(mine,i,j-1,collectedtillNow);
+    travelAndCollectGold(mine,i+1,j,collectedtillNow);
+    mine[i][j]=currentGold;
+    
+}
+
+void getMaxGold(vector<vector<int>> mine){
+    int n=mine.size();
+    int m=mine[0].size();
+    //vector<vector<bool>> visited(n,vector<bool>(m,false));
+    //vector<int> bag;
+    
+    //starting from all the valid positions
+    for(int i=0;i<mine.size();i++){
+        for(int j=0;j<mine[0].size();j++){
+            if(mine[i][j]!=0){
+                travelAndCollectGold(mine,i,j,0);
+            }
+            
+        }
+        
+    }
+    
+}
+
+int main(){
+    int row,col;
+    cin>>row>>col;
+    vector<vector<int>> mine(row,vector<int>(col,0));
+    for(int i=0;i<mine.size();i++){
+        for(int j=0;j<mine[0].size();j++){
+            cin>>mine[i][j];
+        }
+    }
+    
+    getMaxGold(mine);
+    cout<<maxVal<<endl;
+    
+    return 0;
+}

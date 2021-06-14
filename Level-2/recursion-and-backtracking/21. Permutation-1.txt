@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void solve(vector<int> &boxes,int currentEle,int totalEle){
+    //base case
+    if(currentEle>totalEle){
+        //print the ans
+        for(int i=0;i<boxes.size();i++){
+        cout<<boxes[i];
+        }
+        cout<<endl;
+        return;
+    }
+    
+    //options to explore
+    for(int i=0;i<boxes.size();i++){
+        //if box is not filled
+        if(boxes[i]==0){
+            boxes[i]=currentEle;//then fill the box;
+            solve(boxes,currentEle+1,totalEle);//call for remaining boxes
+            boxes[i]=0;//after return back made the boxes as original as it was before
+        }
+    }
+}
+
+int main(){
+    int n;
+    cin>>n;
+    int r;
+    cin>>r;
+    //array of boxes initally contains 0 elements
+    vector<int> boxes(n,0);
+    solve(boxes,1,r);
+    return 0;
+}
