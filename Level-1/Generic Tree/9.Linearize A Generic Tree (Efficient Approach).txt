@@ -1,0 +1,90 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode{
+    public:
+     int data;
+     vector<TreeNode*> children;
+  
+     TreeNode(int data){
+      this->data=data;
+  }
+};
+
+TreeNode* takeInput(vector<int> arr){
+    TreeNode* root=NULL;
+    stack<TreeNode*> st;
+    
+    for(int i=0;i<arr.size();i++){
+        if(arr[i]==-1){
+            st.pop();
+        }
+        else{
+            if(st.size()>0){
+                TreeNode* node=new TreeNode(arr[i]);
+                TreeNode* top=st.top();
+                top->children.push_back(node);
+                st.push(node);
+            }
+            else{
+                root=new TreeNode(arr[i]);
+                st.push(root);
+            }
+        }
+    }
+    return root;
+}
+
+void display(TreeNode* root){
+    if(root==NULL)
+    return;
+    
+    string s=to_string(root->data)+" -> ";
+    for(TreeNode* node:root->children){
+        s+=to_string(node->data)+", ";
+    }
+    s+=".";
+    cout<<s<<endl;
+    
+    for(auto node:root->children){
+        display(node);
+    }
+}
+/*
+TreeNode* tail(TreeNode* node){
+    while(node->children.size()==1){
+        node=node->children[0];
+    }
+    return node;
+}*/
+
+TreeNode* lineraize(TreeNode* root){
+    //base case
+    if(root->children.size()==0){
+        return root;
+    }
+    TreeNode* lkt=lineraize(root->children.back());
+    while(root->children.size()>1){
+        TreeNode* lc=root->children.back();
+        root->children.pop_back();
+        TreeNode* slc=root->children.back();
+        TreeNode* slkt=lineraize(slc);
+        slkt->children.push_back(lc);
+    }
+    return lkt;
+
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    TreeNode* root=takeInput(arr);
+    TreeNode* root2=lineraize(root);
+    display(root); 
+    
+    return 0;
+}

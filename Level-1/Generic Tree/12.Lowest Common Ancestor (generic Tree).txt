@@ -1,0 +1,100 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode{
+    public:
+     int data;
+     vector<TreeNode*> children;
+  
+     TreeNode(int data){
+      this->data=data;
+  }
+};
+
+TreeNode* takeInput(vector<int> arr){
+    TreeNode* root=NULL;
+    stack<TreeNode*> st;
+    
+    for(int i=0;i<arr.size();i++){
+        if(arr[i]==-1){
+            st.pop();
+        }
+        else{
+            if(st.size()>0){
+                TreeNode* node=new TreeNode(arr[i]);
+                TreeNode* top=st.top();
+                top->children.push_back(node);
+                st.push(node);
+            }
+            else{
+                root=new TreeNode(arr[i]);
+                st.push(root);
+            }
+        }
+    }
+    return root;
+}
+
+void display(TreeNode* root){
+    if(root==NULL)
+    return;
+    
+    string s=to_string(root->data)+" -> ";
+    for(TreeNode* node:root->children){
+        s+=to_string(node->data)+", ";
+    }
+    s+=".";
+    cout<<s<<endl;
+    
+    for(auto node:root->children){
+        display(node);
+    }
+}
+
+vector<int> nodeToRootPath(TreeNode* root,int val){
+   if(root->data==val){
+       vector<int> v;
+       v.push_back(root->data);
+       return v;
+   }
+   for(auto child:root->children){
+       vector<int> ptc=nodeToRootPath(child,val);//ptc=path till children
+       if(ptc.size()>0)//means usne koi path return kiya h
+       {
+           ptc.push_back(root->data);//uske last me khud ko add krke
+           return ptc;//return kardo
+       }
+   }
+   return {};
+}
+int lca(TreeNode* root,int val1,int val2){
+    vector<int> p1=nodeToRootPath(root,val1);
+    vector<int> p2=nodeToRootPath(root,val2);
+    int i=p1.size()-1;
+    int j=p2.size()-1;
+    while(i>=0&&j>=0&&p1[i]==p2[j]){
+        i--;
+        j--;
+    }
+    i++;
+    j++;
+    return p1[i];
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    int val1;
+    cin>>val1;
+    int val2;
+    cin>>val2;
+    TreeNode* root=takeInput(arr);
+    cout<<lca(root,val1,val2);
+    
+    
+    return 0;
+}

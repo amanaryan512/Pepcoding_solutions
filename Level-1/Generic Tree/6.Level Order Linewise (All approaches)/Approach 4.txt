@@ -1,0 +1,99 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode{
+    public:
+     int data;
+     vector<TreeNode*> children;
+  
+     TreeNode(int data){
+      this->data=data;
+  }
+};
+
+/*class Pair{
+  public:
+   TreeNode* node;
+   int level;
+   
+   Pair(TreeNode* node,int level){
+       this->node=node;
+       this->level=level;
+   }
+};
+*/
+
+TreeNode* takeInput(vector<int> arr){
+    TreeNode* root=NULL;
+    stack<TreeNode*> st;
+    
+    for(int i=0;i<arr.size();i++){
+        if(arr[i]==-1){
+            st.pop();
+        }
+        else{
+            if(st.size()>0){
+                TreeNode* node=new TreeNode(arr[i]);
+                TreeNode* top=st.top();
+                top->children.push_back(node);
+                st.push(node);
+            }
+            else{
+                root=new TreeNode(arr[i]);
+                st.push(root);
+            }
+        }
+    }
+    return root;
+}
+
+void display(TreeNode* root){
+    if(root==NULL)
+    return;
+    
+    string s=root->data+" -> ";
+    for(TreeNode* node:root->children){
+        s+=node->data+", ";
+    }
+    s+=".";
+    
+    for(auto node:root->children){
+        display(node);
+    }
+}
+
+void levelOrder(TreeNode* root){
+    queue<pair<TreeNode*,int>> q;
+    q.push({root,1});
+    int level=1;
+    
+    while(!q.empty()){
+        auto f=q.front();
+        q.pop();
+        
+        if(f.second>level){
+            level=f.second;
+            cout<<endl;
+        }
+        cout<<f.first->data<<" ";
+        for(auto child:f.first->children)
+        {
+            q.push({child,level+1});
+        }
+    }
+    
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    TreeNode* root=takeInput(arr);
+    levelOrder(root);
+    
+    
+    return 0;
+}

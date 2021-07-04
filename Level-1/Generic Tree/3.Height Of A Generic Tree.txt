@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode{
+    public:
+     int data;
+     vector<TreeNode*> children;
+  
+     TreeNode(int data){
+      this->data=data;
+  }
+};
+
+TreeNode* takeInput(vector<int> arr){
+    TreeNode* root=NULL;
+    stack<TreeNode*> st;
+    
+    for(int i=0;i<arr.size();i++){
+        if(arr[i]==-1){
+            st.pop();
+        }
+        else{
+            if(st.size()>0){
+                TreeNode* node=new TreeNode(arr[i]);
+                TreeNode* top=st.top();
+                top->children.push_back(node);
+                st.push(node);
+            }
+            else{
+                root=new TreeNode(arr[i]);
+                st.push(root);
+            }
+        }
+    }
+    return root;
+}
+
+void display(TreeNode* root){
+    if(root==NULL)
+    return;
+    
+    string s=root->data+" -> ";
+    for(TreeNode* node:root->children){
+        s+=node->data+", ";
+    }
+    s+=".";
+    
+    for(auto node:root->children){
+        display(node);
+    }
+}
+
+int height(TreeNode* root){
+    if(root==NULL)
+    return 0;
+    
+    int h=-1;//edge k term me height ko soche tab
+    for(auto node:root->children){
+        h=max(h,height(node));
+    }
+    return h+1;
+    
+    
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    TreeNode* root=takeInput(arr);
+    cout<<height(root);
+    
+    
+    return 0;
+}

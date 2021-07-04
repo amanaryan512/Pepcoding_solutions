@@ -1,0 +1,91 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode{
+    public:
+     int data;
+     vector<TreeNode*> children;
+  
+     TreeNode(int data){
+      this->data=data;
+  }
+};
+
+TreeNode* takeInput(vector<int> arr){
+    TreeNode* root=NULL;
+    stack<TreeNode*> st;
+    
+    for(int i=0;i<arr.size();i++){
+        if(arr[i]==-1){
+            st.pop();
+        }
+        else{
+            if(st.size()>0){
+                TreeNode* node=new TreeNode(arr[i]);
+                TreeNode* top=st.top();
+                top->children.push_back(node);
+                st.push(node);
+            }
+            else{
+                root=new TreeNode(arr[i]);
+                st.push(root);
+            }
+        }
+    }
+    return root;
+}
+
+void display(TreeNode* root){
+    if(root==NULL)
+    return;
+    
+    string s=to_string(root->data)+" -> ";
+    for(TreeNode* node:root->children){
+        s+=to_string(node->data)+", ";
+    }
+    s+=".";
+    cout<<s<<endl;
+    
+    for(auto node:root->children){
+        display(node);
+    }
+}
+
+bool areSimilar(TreeNode* root1,TreeNode* root2){
+    if(root1->children.size()!=root2->children.size())
+    return false;
+    
+    for(int i=0;i<root1->children.size();i++){
+        TreeNode* child1=root1->children[i];
+        TreeNode* child2=root2->children[i];
+        if(areSimilar(child1,child2)==false){
+            return false;
+        }
+    }
+    return true;
+}
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    int n1;
+    cin>>n1;
+    vector<int> arr1(n1);
+    for(int i=0;i<n1;i++){
+        cin>>arr1[i];
+    }
+    TreeNode* root=takeInput(arr);
+    TreeNode* root1=takeInput(arr1);
+    if(areSimilar(root,root1)==true)
+    cout<<"true";
+    else
+    cout<<"false";
+    
+    
+    
+    return 0;
+}
